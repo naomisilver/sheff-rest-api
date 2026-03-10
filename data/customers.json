@@ -1,0 +1,8 @@
+[
+  {
+    "first_name": "Alice",
+    "family_name": "Smith",
+    "email": "alice.smith@example.com",
+    "status": "active"
+  }
+]

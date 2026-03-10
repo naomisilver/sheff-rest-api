@@ -1,0 +1,23 @@
+[
+  {
+    "customer_id": 1,
+    "product_name": "Wireless Mouse",
+    "product_barcode": 5856515248289891,
+    "quantity": 2,
+    "unit_price": 19.99
+  },
+  {
+    "customer_id": 1,
+    "product_name": "Mechanical Keyboard",
+    "product_barcode": 3237246208538030,
+    "quantity": 1,
+    "unit_price": 89.99
+  },
+  {
+    "customer_id": 1,
+    "product_name": "USB-C Hub",
+    "product_barcode": 3287305409259136,
+    "quantity": 1,
+    "unit_price": 34.50
+  }
+]
