@@ -7,6 +7,13 @@ DB_PATH = "customers.db"
 CUSTOMERS_DATA = Path("data") / "customers.json"
 ORDERS_DATA = Path("data") / "orders.json"
 
+"""
+    TODO:
+        - move db intialisation from __init__ only and have an explicit call to create_db, if api.py is called before db.py a malformed customers.db is created 
+          (I could have api.py create a db object meaning it would be created before flask runs but the requirements were to make "a script" which i interpret 
+          as single run)
+"""
+
 class Database:
     def __init__(self):
 
@@ -80,18 +87,6 @@ class Database:
         conn.commit()
         conn.close()
 
-    def query(self, customer_id) -> list[tuple]: # temp
-
-        conn = sqlite3.connect(DB_PATH)
-        c = conn.cursor()
-
-        c.execute("SELECT * FROM customers INNER JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.customer_id = ?", (customer_id,))
-
-        record = c.fetchall()
-
-        conn.close()
-
-        return record
 
 db = Database()
 
@@ -104,10 +99,6 @@ with open(ORDERS_DATA, "r") as f:
 db.populate_customers(customers)
 db.populate_orders(orders)
 
-query = db.query(customer_id=1)
-
-for q in query:
-    print(q)
         
 """
 CHECK constraint: https://stackoverflow.com/questions/23920332/how-can-i-write-a-check-constraint-in-sql-that-allows-a-series-of-strings-or-a-b
@@ -119,6 +110,4 @@ list of dictionary inserts: https://stackoverflow.com/questions/70548095/when-tr
 
 added barcode column so I have something to conflict on, I *could've* used the product name as the unique and it would've been fine on this small of a scale
 but plan for the future and all that
-
-inner join: https://www.geeksforgeeks.org/sqlite/sqlite-joins/ (my sql is rusty)
 """
