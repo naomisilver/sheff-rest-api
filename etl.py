@@ -41,11 +41,6 @@ def fetch() -> list[dict]:
 
 active_customers = fetch()
 
-for a in active_customers:
-    for o in a["orders"]:
-        print(o)
-
-order_total = 0
 customers = {}
 
 with open(CSV_FILE, "w+", newline="") as csv_file:
@@ -53,13 +48,10 @@ with open(CSV_FILE, "w+", newline="") as csv_file:
     csv_file.write(f"{fieldnames}\n")
     #writer = csv.writer(csv_file)
     for active_customer in active_customers:
+        order_total = 0
         customer = f"{active_customer['first_name']} {active_customer['family_name']}"
-        
         for order in active_customer["orders"]:
-            if order:
-                order_total = order_total + order["quantity"] * order["unit_price"]
-            else:
-                order_total = 1
+            order_total = order_total + order["quantity"] * order["unit_price"]
 
         csv_file.write(f"{customer},{order_total}\n")
 
