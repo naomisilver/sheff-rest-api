@@ -6,6 +6,8 @@ app = Flask(__name__)
 """
     TODO:
         - add a add error handling for 404 and 400 
+
+        - mirror the tuple unpacking I did in etl.py
 """
 
 @app.route("/orders", methods=['GET'])
