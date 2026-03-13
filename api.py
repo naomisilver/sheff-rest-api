@@ -1,5 +1,5 @@
 import sqlite3
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
@@ -9,44 +9,35 @@ app = Flask(__name__)
 
         - mirror the tuple unpacking I did in etl.py
             - unsure if I can/can't do tuple unpacking as I'm addressing specific
+
+            - I can, I was under the impression I should only be returning as single customer dictionary but I can run the same exclusive logic I do in
+              /status and etl.py
 """
 
-@app.route("/orders", methods=['GET'])
+@app.route("/customers", methods=['GET'])
 def get_items():
 
     customer_id = request.args.get("customer_id")
-
-    conn = sqlite3.connect("customers.db")
-    c = conn.cursor()
-    c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.customer_id = ?", (customer_id,))
-    rows = c.fetchall()
-    conn.close()
-
-    customer = {"customer_id": rows[0][0], "first_name": rows[0][1], "family_name": rows[0][2], "email": rows[0][3], "status": rows[0][4], "orders": []}
-
-    for row in rows:
-        if row[5]: # doesn't attempt to assign orders if none exist
-            customer["orders"].append({"order_id": row[5], "customer_id": row[6], "product_name": row[7], "product_barcode": row[8], "quantity": row[9], "unit_price": row[10]})
-
-    return customer
-
-# copied but adapted from etl.py to serve etl-alt.py so instead of querying just for the necessary information in SQL, I query it all but structure it much the
-# same but to serve an API endpoint. Though, serving the same information as the /items endpoint, and creating an entire endpoint for it seems wasteful, this
-# be better done through checking what search param is given so instead of "orders?customer_id=1" you would do "orders?status=active" to invoke, will look into
-# this :D
-@app.route("/status", methods=['GET'])
-def get_status():
-
     status = request.args.get("status")
 
     conn = sqlite3.connect("customers.db")
     c = conn.cursor()
-    c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.status=?", (status,))
+
+    if customer_id:
+        c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.customer_id = ?", (customer_id,))
+    
+    elif status:
+        c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.status=?", (status,))
+
+    else:
+        abort(400, "No search method provided")
+
     rows = c.fetchall()
     conn.close()
 
     customers = {}
 
+    # the same data formatting used in etl.py 
     for row in rows: 
         customer_id, first_name, family_name, email, status, order_id, order_customer_id, product_name, product_barcode, quantity, unit_price = row
 
@@ -56,9 +47,10 @@ def get_status():
         if quantity is not None:
             customers[customer_id]["orders"].append({"order_id": order_id, "customer_id": order_customer_id, "product_name": product_name, "product_barcode": product_barcode, "quantity": quantity, "unit_price": unit_price})
 
-    return list(customers.values())
+    return jsonify(list(customers.values()))
 
 if __name__ == '__main__':
+    #app.run(host="0.0.0.0", port=5000, debug=True) network test for fun
     app.run(debug=True)
 
 """
@@ -69,4 +61,5 @@ refresher on join types in sql (mostly sqlite as sqlite only supports some of SQ
 at universit, inner join pulls information only when data matches in both tables, like the centre of a venn diagram, left pulls information if it matches in the
 left table, then from the other table if there is any
 
+multi params per singular endpoint: https://www.geeksforgeeks.org/python/using-request-args-for-a-variable-url-in-flask/
 """

@@ -17,8 +17,13 @@ ORDERS_DATA = Path("data") / "orders.json"
 class Database:
     def __init__(self):
 
-        if not os.path.exists(DB_PATH):
-            self.create_db()
+        if os.path.exists(DB_PATH):
+            os.remove(DB_PATH)
+
+        self.create_db()
+
+        #if not os.path.exists(DB_PATH):
+            #self.create_db()
 
     def create_db(self):
 
@@ -38,7 +43,7 @@ class Database:
                           order_id integer PRIMARY KEY,
                           customer_id integer NOT NULL,
                           product_name text NOT NULL,
-                          product_barcode integer NOT NULL UNIQUE,
+                          product_barcode integer NOT NULL,
                           quantity integer NOT NULL,
                           unit_price numeric NOT NULL,
                           FOREIGN KEY (customer_id) REFERENCES customer(customer_id)

@@ -21,7 +21,7 @@ def get_status(status: str):
         "status": status
     }
 
-    r = session.get(f"{API_ROOT}status", headers=headers, params=payload)
+    r = session.get(f"{API_ROOT}customers", headers=headers, params=payload)
     #print(r.status_code)
 
     data = r.json()
