@@ -103,7 +103,7 @@ Where `[status type]` can either be `active`, `suspended` or `archived` and it w
 
 - As for the RESTful package options, about the only package I could find, was `Flask`. Reddit threads and StackOverflow posts were filled with recommendations and documentation and I'm not one to look a gift horse in the mouth when it comes to great options.
 
-- `Requests`, this is only used in `etl-alt.py` but is similar to `flask` in it's supposed fame. When I first started using APIs in my `mediamultitool` project, I was looking into the ways to evoke them and frameworks built around `Requests` or `httpx` like [pylast](https://github.com/pylast/pylast). And quickly got bottlenecked by their limited capability like (the lack of) session pooling, finer control over the payload and parallelisation, and looked at `Requests` and it is easy to use and incredibly feature rich.
+- `Requests`, this is only used in `etl-alt.py` but is similar to `flask` in it's supposed fame. When I first started using APIs in my `mediamultitool` project, I was looking into the ways to invoke them and frameworks built around `Requests` or `httpx` like [pylast](https://github.com/pylast/pylast). And quickly got bottlenecked by their limited capability like (the lack of) session pooling, finer control over the payload and parallelisation, and looked at `Requests` and it is easy to use and incredibly feature rich.
 
 ### Code/data specific reasoning:
 
