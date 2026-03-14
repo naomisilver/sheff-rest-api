@@ -9,26 +9,28 @@ CSV_FILE = OUTPUT_DIR / Path("output-alt.csv")
 
 API_ROOT = "http://127.0.0.1:5000/"
 
-headers = {
-        'user-agent': "sheffield-rest-api" # I'm not checking this in flask but good practice
+headers = { # not checking for it but still best practice :)
+        'user-agent': "sheffield-rest-api"
     }
 
-session = requests.Session() # not necessarily needed as I'm making a single call, and so maintaining the same session across invocations has little benefit
+session = requests.Session()
 
 def get_status(status: str):
+    """ invokes api """
     
     payload = {
         "status": status
     }
 
     r = session.get(f"{API_ROOT}customers", headers=headers, params=payload)
-    #print(r.status_code)
 
     data = r.json()
 
     return data
 
-def transform():
+def transform_and_load():
+    """ transforms customer data and loads into a csv file """
+
     try:
         status = sys.argv[1]
     except IndexError:
@@ -47,12 +49,13 @@ def transform():
             c_name = f"{customer['first_name']} {customer['family_name']}"
             for order in customer["orders"]:
                 order_total = order_total + order["quantity"] * order["unit_price"]
-
-            csv_file.write(f"{c_name},{order_total}\n")
+                csv_file.write(f"{c_name},{order_total}\n")
+            
+            #csv_file.write(f"{c_name},{order_total}\n")
 
 if __name__ == "__main__":
-    transform()
+    transform_and_load()
 
 """
-I thought this would be nice: https://www.tutorialspoint.com/python/python_command_line_arguments.htm#:~:text=You%20can%20pass%20values%20to,argv%20variable.
+input param for search value: https://www.tutorialspoint.com/python/python_command_line_arguments.htm#:~:text=You%20can%20pass%20values%20to,argv%20variable.
 """

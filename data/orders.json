@@ -18,6 +18,230 @@
     "product_name": "USB-C Hub",
     "product_barcode": 3287305409259136,
     "quantity": 1,
-    "unit_price": 34.50
+    "unit_price": 34.5
+  },
+  {
+    "customer_id": 2,
+    "product_name": "Ceramic Mug",
+    "product_barcode": 4419082756134827,
+    "quantity": 4,
+    "unit_price": 6.99
+  },
+  {
+    "customer_id": 2,
+    "product_name": "Notebook",
+    "product_barcode": 7741203984516205,
+    "quantity": 3,
+    "unit_price": 3.49
+  },
+  {
+    "customer_id": 3,
+    "product_name": "Desk Lamp",
+    "product_barcode": 9136402751846621,
+    "quantity": 1,
+    "unit_price": 24.99
+  },
+  {
+    "customer_id": 3,
+    "product_name": "Wireless Mouse",
+    "product_barcode": 5856515248289891,
+    "quantity": 1,
+    "unit_price": 19.99
+  },
+  {
+    "customer_id": 4,
+    "product_name": "Water Bottle",
+    "product_barcode": 6083219475128640,
+    "quantity": 2,
+    "unit_price": 12.75
+  },
+  {
+    "customer_id": 4,
+    "product_name": "Yoga Mat",
+    "product_barcode": 8527419630147852,
+    "quantity": 1,
+    "unit_price": 29.99
+  },
+  {
+    "customer_id": 5,
+    "product_name": "Coffee Beans",
+    "product_barcode": 1928374650918273,
+    "quantity": 2,
+    "unit_price": 8.95
+  },
+  {
+    "customer_id": 5,
+    "product_name": "Ceramic Mug",
+    "product_barcode": 4419082756134827,
+    "quantity": 2,
+    "unit_price": 6.99
+  },
+  {
+    "customer_id": 6,
+    "product_name": "Bluetooth Speaker",
+    "product_barcode": 7319054826143709,
+    "quantity": 1,
+    "unit_price": 45.0
+  },
+  {
+    "customer_id": 6,
+    "product_name": "USB-C Hub",
+    "product_barcode": 3287305409259136,
+    "quantity": 2,
+    "unit_price": 34.5
+  },
+  {
+    "customer_id": 8,
+    "product_name": "Running Shoes",
+    "product_barcode": 5647382910564738,
+    "quantity": 1,
+    "unit_price": 74.99
+  },
+  {
+    "customer_id": 8,
+    "product_name": "Water Bottle",
+    "product_barcode": 6083219475128640,
+    "quantity": 1,
+    "unit_price": 12.75
+  },
+  {
+    "customer_id": 9,
+    "product_name": "Desk Lamp",
+    "product_barcode": 9136402751846621,
+    "quantity": 2,
+    "unit_price": 24.99
+  },
+  {
+    "customer_id": 9,
+    "product_name": "Notebook",
+    "product_barcode": 7741203984516205,
+    "quantity": 5,
+    "unit_price": 3.49
+  },
+  {
+    "customer_id": 10,
+    "product_name": "Mechanical Keyboard",
+    "product_barcode": 3237246208538030,
+    "quantity": 1,
+    "unit_price": 89.99
+  },
+  {
+    "customer_id": 10,
+    "product_name": "Monitor Stand",
+    "product_barcode": 2468135790246813,
+    "quantity": 1,
+    "unit_price": 39.99
+  },
+  {
+    "customer_id": 11,
+    "product_name": "Backpack",
+    "product_barcode": 3901827465019384,
+    "quantity": 1,
+    "unit_price": 54.99
+  },
+  {
+    "customer_id": 11,
+    "product_name": "Notebook",
+    "product_barcode": 7741203984516205,
+    "quantity": 2,
+    "unit_price": 3.49
+  },
+  {
+    "customer_id": 12,
+    "product_name": "LED Bulb Pack",
+    "product_barcode": 6758493021567849,
+    "quantity": 3,
+    "unit_price": 11.99
+  },
+  {
+    "customer_id": 13,
+    "product_name": "Coffee Beans",
+    "product_barcode": 1928374650918273,
+    "quantity": 1,
+    "unit_price": 8.95
+  },
+  {
+    "customer_id": 13,
+    "product_name": "Bluetooth Speaker",
+    "product_barcode": 7319054826143709,
+    "quantity": 1,
+    "unit_price": 45.0
+  },
+  {
+    "customer_id": 14,
+    "product_name": "Scented Candle",
+    "product_barcode": 8172635401928374,
+    "quantity": 2,
+    "unit_price": 14.5
+  },
+  {
+    "customer_id": 14,
+    "product_name": "Ceramic Mug",
+    "product_barcode": 4419082756134827,
+    "quantity": 1,
+    "unit_price": 6.99
+  },
+  {
+    "customer_id": 16,
+    "product_name": "Garden Trowel",
+    "product_barcode": 9583746201847563,
+    "quantity": 1,
+    "unit_price": 9.99
+  },
+  {
+    "customer_id": 16,
+    "product_name": "LED Bulb Pack",
+    "product_barcode": 6758493021567849,
+    "quantity": 1,
+    "unit_price": 11.99
+  },
+  {
+    "customer_id": 17,
+    "product_name": "Backpack",
+    "product_barcode": 3901827465019384,
+    "quantity": 2,
+    "unit_price": 54.99
+  },
+  {
+    "customer_id": 18,
+    "product_name": "Yoga Mat",
+    "product_barcode": 8527419630147852,
+    "quantity": 1,
+    "unit_price": 29.99
+  },
+  {
+    "customer_id": 18,
+    "product_name": "Water Bottle",
+    "product_barcode": 6083219475128640,
+    "quantity": 3,
+    "unit_price": 12.75
+  },
+  {
+    "customer_id": 19,
+    "product_name": "Monitor Stand",
+    "product_barcode": 2468135790246813,
+    "quantity": 1,
+    "unit_price": 39.99
+  },
+  {
+    "customer_id": 19,
+    "product_name": "Wireless Mouse",
+    "product_barcode": 5856515248289891,
+    "quantity": 1,
+    "unit_price": 19.99
+  },
+  {
+    "customer_id": 20,
+    "product_name": "Running Shoes",
+    "product_barcode": 5647382910564738,
+    "quantity": 1,
+    "unit_price": 74.99
+  },
+  {
+    "customer_id": 20,
+    "product_name": "Scented Candle",
+    "product_barcode": 8172635401928374,
+    "quantity": 4,
+    "unit_price": 14.5
   }
 ]

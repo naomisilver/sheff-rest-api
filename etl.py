@@ -2,59 +2,65 @@ import sqlite3
 import csv
 from pathlib import Path
 
-"""
-    TODO:
-        - look into using csv for writing to a csv file, its not necessary but would like to have it sorted
-"""
-
 OUTPUT_DIR = Path("output")
-OUTPUT_DIR.mkdir(parents=True, exist_ok=True) # taking the place of user_config_path for a generalised output path, I have it outputting
-# to the cloned repo as I don't want to clog your documents folder (or similar) or if the uni perms will allow/disallow certain output
-# locations
+OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 CSV_FILE = OUTPUT_DIR / Path("output.csv")
 
 def fetch() -> list[dict]:
+    """ fetches customers with 'active' statuses """
 
     conn = sqlite3.connect("customers.db")
     c = conn.cursor()
 
-    c.execute("SELECT customers.customer_id, customers.first_name, customers.family_name, orders.quantity, orders.unit_price FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.status = 'active'")
+    c.execute("""SELECT customers.customer_id, 
+              customers.first_name, 
+              customers.family_name, 
+              orders.quantity, 
+              orders.unit_price 
+              FROM customers 
+              LEFT JOIN orders 
+              ON customers.customer_id = orders.customer_id 
+              WHERE customers.status = 'active'
+              """)
+    
     rows = c.fetchall()
     conn.close()
 
     customers = {}
 
-    # this, not to toot my own horn, is a little genuis. I got stuck on how to do this cleanly for a while, as sqlite just returns a list of
-    # tuples irrespective of whether there's repeats, so I use the customer_id itself as the key and set the rest of the data as the value
-    # mixed in with a little tuple unpacking (this feels like when I learnt list comprehension and generator expressions, it's crazy) though
-    # i fear this is probably just common knowledge
     for row in rows: 
-        customer_id, first_name, family_name, quantity, unit_price = row
+        customer_id, first_name, family_name, quantity, unit_price = row # tuple unpack 
 
-        if customer_id not in customers:
+        if customer_id not in customers: # uses the customer_id as an index then if it's not included in the dictionary, set the entireity as a value
             customers[customer_id] = {"customer_id": customer_id, "first_name": first_name, "family_name": family_name, "orders": []}
 
-        if quantity is not None:
+        if quantity is not None: # if quantity when unpacked isn't empty, assign the current customer
             customers[customer_id]["orders"].append({"quantity": quantity, "unit_price": unit_price})
 
-    return list(customers.values())
+    return list(customers.values()) # removes the customer_id keys and sends back a list of dictionaries
 
-active_customers = fetch()
+def transform_and_load():
+    """ transforms customer data and loads into a csv file """
 
-customers = {}
+    customers = fetch()
 
-with open(CSV_FILE, "w+", newline="") as csv_file:
-    fieldnames = "name,total order value"
-    csv_file.write(f"{fieldnames}\n")
-    #writer = csv.writer(csv_file)
-    for active_customer in active_customers:
-        order_total = 0
-        customer = f"{active_customer['first_name']} {active_customer['family_name']}"
-        for order in active_customer["orders"]:
-            order_total = order_total + order["quantity"] * order["unit_price"]
+    with open(CSV_FILE, "w+", newline="") as csv_file:
+        fieldnames = "name,total order value" # column headers for csv
+        csv_file.write(f"{fieldnames}\n")
 
-        csv_file.write(f"{customer},{order_total}\n")
+        for customer in customers:
+            order_total = 0
+            c_name = f"{customer['first_name']} {customer['family_name']}"
+            for order in customer["orders"]:
+                order_total = order_total + order["quantity"] * order["unit_price"]
+                csv_file.write(f"{c_name},{order_total}\n") 
+                # looking back at the task, I think I misunderstood, you want each customer's induvidual orders as a sum and row as apposed to the
+                # entire value of ALL of a customer's orders (I did think that was a little weird)
 
+            #csv_file.write(f"{customer},{order_total}\n")
+
+if __name__ == "__main__":
+    transform_and_load()
 
 """
 tuple unpacking... why have I never seen this before https://www.w3schools.com/python/python_tuples_unpack.asp

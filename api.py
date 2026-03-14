@@ -3,19 +3,9 @@ from flask import Flask, jsonify, request, abort
 
 app = Flask(__name__)
 
-"""
-    TODO:
-        - add error handling for 404 and 400 
-
-        - mirror the tuple unpacking I did in etl.py
-            - unsure if I can/can't do tuple unpacking as I'm addressing specific
-
-            - I can, I was under the impression I should only be returning as single customer dictionary but I can run the same exclusive logic I do in
-              /status and etl.py
-"""
-
 @app.route("/customers", methods=['GET'])
-def get_items():
+def get_customers():
+    """ starts the API """
 
     customer_id = request.args.get("customer_id")
     status = request.args.get("status")
@@ -23,13 +13,23 @@ def get_items():
     conn = sqlite3.connect("customers.db")
     c = conn.cursor()
 
-    if customer_id:
-        c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.customer_id = ?", (customer_id,))
+    if customer_id: # if customer_id is given as an argument
+        c.execute("""SELECT * FROM customers 
+                  LEFT JOIN orders 
+                  ON customers.customer_id = orders.customer_id 
+                  WHERE customers.customer_id = ?""", 
+                  (customer_id,)
+                  )
     
-    elif status:
-        c.execute("SELECT * FROM customers LEFT JOIN orders ON customers.customer_id = orders.customer_id WHERE customers.status=?", (status,))
+    elif status: # if status is given as an argument
+        c.execute("""SELECT * FROM customers 
+                  LEFT JOIN orders 
+                  ON customers.customer_id = orders.customer_id 
+                  WHERE customers.status=?""", 
+                  (status,)
+                  )
 
-    else:
+    else: # if no args are given
         abort(400, "No search method provided")
 
     rows = c.fetchall()
@@ -54,8 +54,8 @@ if __name__ == '__main__':
     app.run(debug=True)
 
 """
-flask intro https://dzone.com/articles/build-simple-api-with-python-flask-and-sql
-flask get params https://www.browserstack.com/guide/flask-get-query-parameters
+flask intro:                        https://dzone.com/articles/build-simple-api-with-python-flask-and-sql
+flask get params:                   https://www.browserstack.com/guide/flask-get-query-parameters
 
 refresher on join types in sql (mostly sqlite as sqlite only supports some of SQLs joins) led me to inner vs left join and an explanation far better than that I got
 at universit, inner join pulls information only when data matches in both tables, like the centre of a venn diagram, left pulls information if it matches in the

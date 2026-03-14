@@ -7,13 +7,6 @@ DB_PATH = "customers.db"
 CUSTOMERS_DATA = Path("data") / "customers.json"
 ORDERS_DATA = Path("data") / "orders.json"
 
-"""
-    TODO:
-        - move db intialisation from __init__ only and have an explicit call to create_db, if api.py is called before db.py a malformed customers.db is created 
-          (I could have api.py create a db object meaning it would be created before flask runs but the requirements were to make "a script" which i interpret 
-          as single run)
-"""
-
 class Database:
     def __init__(self):
 
@@ -22,10 +15,11 @@ class Database:
 
         self.create_db()
 
-        #if not os.path.exists(DB_PATH):
-            #self.create_db()
+        #if not os.path.exists(DB_PATH): running api.py or etl.py makes a malformed db without tables and thus fails to retrieve data
+            #self.create_db() also, doing this means I can't remove records that are removed from the dataset
 
     def create_db(self):
+        """ creates the database and tables """
 
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -44,8 +38,8 @@ class Database:
                           customer_id integer NOT NULL,
                           product_name text NOT NULL,
                           product_barcode integer NOT NULL,
-                          quantity integer NOT NULL,
-                          unit_price numeric NOT NULL,
+                          quantity integer NOT NULL CHECK(quantity >= 0.00),
+                          unit_price numeric NOT NULL CHECK(unit_price >= 0.00),
                           FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
                           )
                         """)
@@ -54,6 +48,7 @@ class Database:
         conn.close()
 
     def populate_customers(self, customers: list[dict]):
+        """ populates customers table """
         
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -73,6 +68,7 @@ class Database:
         conn.close()
 
     def populate_orders(self, orders: list[dict]):
+        """ populates orders table """
 
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
@@ -92,27 +88,29 @@ class Database:
         conn.commit()
         conn.close()
 
+def main():
+    """ init db and populate """
 
-db = Database()
+    db = Database()
 
-with open(CUSTOMERS_DATA, "r") as f:
-    customers = json.load(f)
+    with open(CUSTOMERS_DATA, "r") as f:
+        customers = json.load(f)
 
-with open(ORDERS_DATA, "r") as f:
-    orders = json.load(f)
+    with open(ORDERS_DATA, "r") as f:
+        orders = json.load(f)
 
-db.populate_customers(customers)
-db.populate_orders(orders)
+    db.populate_customers(customers)
+    db.populate_orders(orders)
+
+if __name__ == "__main__":
+    main()
 
         
 """
-CHECK constraint: https://stackoverflow.com/questions/23920332/how-can-i-write-a-check-constraint-in-sql-that-allows-a-series-of-strings-or-a-b
-https://www.tutorialspoint.com/sqlite/sqlite_constraints.htm#:~:text=Constraints%20are%20the%20rules%20enforced,the%20data%20in%20the%20database.
+CHECK constraint:           https://stackoverflow.com/questions/23920332/how-can-i-write-a-check-constraint-in-sql-that-allows-a-series-of-strings-or-a-b
+                            https://www.tutorialspoint.com/sqlite/sqlite_constraints.htm#:~:text=Constraints%20are%20the%20rules%20enforced,the%20data%20in%20the%20database.
 
 list of dictionary inserts: https://stackoverflow.com/questions/70548095/when-trying-to-convert-a-list-of-python-dictionaries-into-a-sqlite-table-i-keep
-    - I tried: https://stackoverflow.com/questions/33636191/insert-a-list-of-dictionaries-into-an-sql-table-using-python
-      but sqlite3's implementation is different and doesn't use the %s formatting for dict items
-
-added barcode column so I have something to conflict on, I *could've* used the product name as the unique and it would've been fine on this small of a scale
-but plan for the future and all that
+    - I tried:              https://stackoverflow.com/questions/33636191/insert-a-list-of-dictionaries-into-an-sql-table-using-python
+        but sqlite3's implementation is different and doesn't use the %s formatting for dict items
 """
