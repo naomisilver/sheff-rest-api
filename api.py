@@ -51,7 +51,8 @@ def get_customers():
 
 if __name__ == '__main__':
     #app.run(host="0.0.0.0", port=5000, debug=True) network test for fun
-    app.run(debug=True)
+    #app.run(debug=True)
+    app.run()
 
 """
 flask intro:                        https://dzone.com/articles/build-simple-api-with-python-flask-and-sql
